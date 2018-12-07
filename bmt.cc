@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <random>
 #include <chrono>
 #include <cassert>
@@ -99,7 +100,7 @@ int main(int argc, char *argv[]) {
   }
   std::cout << "  axpy_simd passed" << std::endl;
   zero(uy, size);
-  axpy_simd(1, ux, uy, size);
+  axpy_simdu(1, ux, uy, size);
   for (int i = 0; i < size; i++) {
     assert(ux[i] == uy[i]);
   }
@@ -121,7 +122,7 @@ int main(int argc, char *argv[]) {
     zero(uy, size);
     std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
     for (int i = 0; i < trial; i++) {
-      axpy(0.01, ux, uy, size);
+      axpy(0.00001, ux, uy, size);
     }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     elapsed.push_back(std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count());
@@ -132,7 +133,7 @@ int main(int argc, char *argv[]) {
     zero(ay, size);
     std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
     for (int i = 0; i < trial; i++) {
-      axpy_simd(0.01, ax, ay, size);
+      axpy_simd(0.00001, ax, ay, size);
     }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     elapsed.push_back(std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count());
@@ -147,7 +148,7 @@ int main(int argc, char *argv[]) {
     zero(uy, size);
     std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
     for (int i = 0; i < trial; i++) {
-      axpy_simdu(0.01, ux, uy, size);
+      axpy_simdu(0.00001, ux, uy, size);
     }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     elapsed.push_back(std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count());
@@ -191,6 +192,11 @@ int main(int argc, char *argv[]) {
     elapsed.push_back(std::chrono::duration_cast<std::chrono::duration<double>>(end - start).count());
     std::cout << "  dot_simdu elapsed " << *(elapsed.end() - 1) << empty << std::endl;
   }
+
+  std::cout << "axpy_simd over axpy " << std::setprecision(2) << (elapsed[0] - elapsed[1]) / elapsed[0] << "%" << std::endl;
+  std::cout << "axpy_simd over axpy_simdu " << std::setprecision(2) << (elapsed[2] - elapsed[1]) / elapsed[2] << "%" << std::endl;
+  std::cout << "dot_simd over dot " << std::setprecision(2) << (elapsed[3] - elapsed[4]) / elapsed[3] << "%" << std::endl;
+  std::cout << "dot_simd over dot_simdu " << std::setprecision(2) << (elapsed[5] - elapsed[4]) / elapsed[5] << "%" << std::endl;
 
   std::cout << "release resources" << std::endl;
   _mm_free(ax);
