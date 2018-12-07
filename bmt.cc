@@ -193,10 +193,10 @@ int main(int argc, char *argv[]) {
     std::cout << "  dot_simdu elapsed " << *(elapsed.end() - 1) << empty << std::endl;
   }
 
-  std::cout << "axpy_simd over axpy " << std::setprecision(2) << (elapsed[0] - elapsed[1]) / elapsed[0] << "%" << std::endl;
-  std::cout << "axpy_simd over axpy_simdu " << std::setprecision(2) << (elapsed[2] - elapsed[1]) / elapsed[2] << "%" << std::endl;
-  std::cout << "dot_simd over dot " << std::setprecision(2) << (elapsed[3] - elapsed[4]) / elapsed[3] << "%" << std::endl;
-  std::cout << "dot_simd over dot_simdu " << std::setprecision(2) << (elapsed[5] - elapsed[4]) / elapsed[5] << "%" << std::endl;
+  std::cout << "axpy_simd over axpy " << std::setprecision(2) << 100 * (elapsed[0] - elapsed[1]) / elapsed[0] << "%" << std::endl;
+  std::cout << "axpy_simd over axpy_simdu " << std::setprecision(2) << 100 * (elapsed[2] - elapsed[1]) / elapsed[2] << "%" << std::endl;
+  std::cout << "dot_simd over dot " << std::setprecision(2) << 100 * (elapsed[3] - elapsed[4]) / elapsed[3] << "%" << std::endl;
+  std::cout << "dot_simd over dot_simdu " << std::setprecision(2) << 100 * (elapsed[5] - elapsed[4]) / elapsed[5] << "%" << std::endl;
 
   std::cout << "release resources" << std::endl;
   _mm_free(ax);
